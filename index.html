@@ -93,7 +93,6 @@
         <div class="muted" style="font-size:12px">Glass • Neon • Sound • Vibration • History</div>
       </div>
       <div class="controls">
-        <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">AC</button>
         <button class="btn" id="modeToggle" onclick="toggleMode()">🌙/☀️</button>
       </div>
     </div>
@@ -138,6 +137,7 @@
       <button class="key eq" onclick="calc()">=</button>
       <button class="key op" onclick="press('+')">+</button>
       <button class="key" onclick="applyFunc('abs')">abs</button>
+      <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">AC</button>
 
     </div>
   </div>
@@ -198,14 +198,14 @@ function press(v){
 function applyFunc(name){
   playClick(); vibrateShort();
   const map = {
-    sin: 'Math.sin(',
-    cos: 'Math.cos(',
-    tan: 'Math.tan(',
-    sqrt: 'Math.sqrt(',
+    sin: 'sin(',
+    cos: 'cos(',
+    tan: 'tan(',
+    sqrt: 'sqrt(',
     ln: 'ln(',
     pow: '**',
-    exp: 'Math.exp(',
-    abs: 'Math.abs('
+    exp: 'exp(',
+    abs: 'abs('
   };
   if(name === 'pow'){
     // user-friendly: put operator for power
@@ -254,7 +254,7 @@ function animateDisplay(){
 
 /* -----------------------------
    Parsing & safe evaluation
-   - supports: ^ => **, ln() => Math.log(), log() => Math.log10()
+   - supports: ^ => **, ln() => log(), log() => log10()
    - supports factorial via x!
    - supports usage of "ans" (last answer)
    ----------------------------- */
