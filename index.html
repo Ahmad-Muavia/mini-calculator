@@ -75,10 +75,10 @@
   .muted{color:var(--muted);}
 
   /* responsive */
-  @media(max-width:900px){
-    .wrap{flex-direction:column;align-items:center;padding:18px}
+  @media(max-width:1000px){
+    .wrap{flex-direction:column;align-items:center;padding:20px}
     .history{width:92%}
-    .calc{width:92%}
+    .calc{width:98%}
     .keys{grid-template-columns: repeat(4, 1fr) }
   }
 </style>
@@ -89,11 +89,11 @@
   <div class="calc" id="calculator">
     <div class="topbar">
       <div>
-        <div class="title">Neon Scientific Calculator</div>
+        <div class="title">Scientific Calculator</div>
         <div class="muted" style="font-size:12px">Glass • Neon • Sound • Vibration • History</div>
       </div>
       <div class="controls">
-        <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">C</button>
+        <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">AC</button>
         <button class="btn" id="modeToggle" onclick="toggleMode()">🌙/☀️</button>
       </div>
     </div>
