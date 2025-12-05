@@ -1,184 +1,394 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Advanced Scientific Calculator</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Neon Glass Scientific Calculator</title>
 <style>
-    *{box-sizing:border-box; user-select:none;}
-    body{
-        margin:0;
-        font-family:system-ui;
-        background:#f0f0f0;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-        transition:0.3s;
-    }
+  :root{
+    --bg: #0b0f14;
+    --card: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.06);
+    --accent: #67e8f9;
+    --accent-2: #7c3aed;
+    --muted: rgba(255,255,255,0.55);
+    --neon: 0 6px 30px rgba(103,232,249,0.12), 0 0 18px rgba(124,58,237,0.07);
+  }
+  *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#071018 0%, #08121a 100%); color:#e6eef8}
+  .wrap{display:flex;gap:22px;align-items:flex-start;justify-content:center;padding:28px;}
+  .calc{
+    width:360px;
+    border-radius:16px;
+    padding:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: var(--neon);
+    position:relative;
+  }
+  .topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .title{font-weight:600;letter-spacing:0.2px}
+  .controls{display:flex;gap:8px;align-items:center}
+  .btn{
+    border:none;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer;transition:all .14s; font-weight:600;
+  }
+  .btn:hover{transform:translateY(-4px); box-shadow:0 8px 18px rgba(0,0,0,0.4)}
+  #modeToggle{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#02111a}
+  #display{
+    width:100%; height:70px; border-radius:12px; border:none; outline:none;
+    padding:10px 14px; font-size:28px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    color:#eaf6ff; text-align:right; transition:all .18s; letter-spacing:0.6px;
+    box-shadow: inset 0 -2px 10px rgba(0,0,0,0.45);
+  }
+  .display-anim{ animation: flash .38s ease; }
+  @keyframes flash{ 0%{transform:scale(0.995);opacity:.6} 100%{transform:none;opacity:1} }
 
-    body.dark{
-        background:#0d0d0d;
-        color:white;
-    }
+  .keys{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:10px;
+  }
 
-    .calc{
-        width:330px;
-        background:white;
-        border-radius:16px;
-        padding:18px;
-        box-shadow:0 0 20px rgba(0,0,0,0.15);
-        transition:0.3s;
-    }
+  .key{
+    height:54px; border-radius:10px; border:none; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    color:#dff6ff; font-weight:600; cursor:pointer; transition:all .12s; box-shadow: 0 6px 18px rgba(2,10,20,0.6);
+  }
+  .key:hover{ transform:translateY(-4px); filter:brightness(1.08); box-shadow: 0 12px 36px rgba(2,10,20,0.7); }
+  .key:active{ transform:scale(.96) translateY(1px); }
 
-    body.dark .calc{
-        background:#1a1a1a;
-        box-shadow:0 0 25px rgba(255,255,255,0.05);
-    }
+  .op{ background:linear-gradient(90deg,#ffb86b,#ff6b6b); color:#041014; box-shadow: 0 10px 30px rgba(255,107,107,0.14) }
+  .sc{ background:linear-gradient(90deg,#67e8f9,#7c3aed); color:#02111a; box-shadow: 0 10px 30px rgba(103,232,249,0.08) }
+  .eq{ background:linear-gradient(90deg,#5efc82,#06b6a4); color:#04211e; box-shadow:0 10px 30px rgba(94,252,130,0.08) }
+  .clear{ background:linear-gradient(90deg,#ff6b6b,#ff9a9a); color:#041014; }
 
-    #display{
-        width:100%;
-        height:60px;
-        font-size:28px;
-        padding:10px;
-        border:none;
-        border-radius:10px;
-        text-align:right;
-        background:#e9e9e9;
-    }
+  /* History panel */
+  .history{
+    width:320px; max-height:620px; overflow:auto;
+    border-radius:14px; padding:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    backdrop-filter: blur(6px); box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+  .hist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .hist-list{display:flex;flex-direction:column;gap:8px}
+  .hist-item{padding:8px;border-radius:10px;background:rgba(0,0,0,0.18);cursor:pointer}
+  .hist-item small{display:block;color:var(--muted);font-size:12px}
+  .muted{color:var(--muted);}
 
-    body.dark #display{
-        background:#333;
-        color:white;
-    }
-
-    .keys{
-        margin-top:15px;
-        display:grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap:10px;
-    }
-
-    button{
-        height:55px;
-        font-size:18px;
-        border:none;
-        border-radius:12px;
-        background:#dedede;
-        cursor:pointer;
-        transition:0.15s;
-    }
-
-    body.dark button{
-        background:#2b2b2b;
-        color:white;
-    }
-
-    button:hover{
-        transform:translateY(-3px);
-        box-shadow:0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    button:active{
-        transform:scale(0.94);
-    }
-
-    .op{ background:#ffbb33 !important; }
-    .sc{ background:#66b2ff !important; }
-    .eq{ background:#66e066 !important; }
-    .clear{ background:#ff6666 !important; }
-
-    #modeToggle{
-        margin-bottom:10px;
-        width:100%;
-        height:40px;
-        background:#444;
-        color:white;
-        border-radius:10px;
-    }
+  /* responsive */
+  @media(max-width:900px){
+    .wrap{flex-direction:column;align-items:center;padding:18px}
+    .history{width:92%}
+    .calc{width:92%}
+    .keys{grid-template-columns: repeat(4, 1fr) }
+  }
 </style>
-
 </head>
 <body>
 
-<div class="calc">
+<div class="wrap">
+  <div class="calc" id="calculator">
+    <div class="topbar">
+      <div>
+        <div class="title">Neon Scientific Calculator</div>
+        <div class="muted" style="font-size:12px">Glass • Neon • Sound • Vibration • History</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">C</button>
+        <button class="btn" id="modeToggle" onclick="toggleMode()">🌙 Dark / ☀️ Light</button>
+      </div>
+    </div>
 
-    <button id="modeToggle" onclick="toggleMode()">🌙 Dark / ☀️ Light</button>
+    <input id="display" placeholder="0" readonly />
 
-    <input id="display" readonly />
+    <div class="keys" id="keys">
+      <!-- scientific -->
+      <button class="key sc" onclick="applyFunc('sin')">sin</button>
+      <button class="key sc" onclick="applyFunc('cos')">cos</button>
+      <button class="key sc" onclick="applyFunc('tan')">tan</button>
+      <button class="key sc" onclick="applyFunc('sqrt')">√</button>
+      <button class="key sc" onclick="applyFunc('ln')">ln</button>
 
-    <div class="keys">
+      <button class="key sc" onclick="press('(')">(</button>
+      <button class="key sc" onclick="press(')')">)</button>
+      <button class="key sc" onclick="press('π')">π</button>
+      <button class="key sc" onclick="press('e')">e</button>
+      <button class="key sc" onclick="percent()">%</button>
 
-        <!-- Scientific Row -->
-        <button class="sc" onclick="sci('sin')">sin</button>
-        <button class="sc" onclick="sci('cos')">cos</button>
-        <button class="sc" onclick="sci('tan')">tan</button>
-        <button class="sc" onclick="sci('sqrt')">√</button>
+      <!-- numbers / ops -->
+      <button class="key" onclick="press('7')">7</button>
+      <button class="key" onclick="press('8')">8</button>
+      <button class="key" onclick="press('9')">9</button>
+      <button class="key op" onclick="press('/')">÷</button>
+      <button class="key clear" onclick="factorial()">x!</button>
 
-        <!-- Scientific Row -->
-        <button class="sc" onclick="sci('log')">log</button>
-        <button class="sc" onclick="press('π')">π</button>
-        <button class="sc" onclick="press('e')">e</button>
-        <button class="sc" onclick="press('^')">^</button>
+      <button class="key" onclick="press('4')">4</button>
+      <button class="key" onclick="press('5')">5</button>
+      <button class="key" onclick="press('6')">6</button>
+      <button class="key op" onclick="press('*')">×</button>
+      <button class="key" onclick="applyFunc('pow')">xʸ</button>
 
-        <!-- Normal Calculator -->
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button class="op" onclick="press('/')">÷</button>
+      <button class="key" onclick="press('1')">1</button>
+      <button class="key" onclick="press('2')">2</button>
+      <button class="key" onclick="press('3')">3</button>
+      <button class="key op" onclick="press('-')">−</button>
+      <button class="key" onclick="applyFunc('exp')">exp</button>
 
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button class="op" onclick="press('*')">×</button>
-
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button class="op" onclick="press('-')">−</button>
-
-        <button onclick="press('0')">0</button>
-        <button onclick="press('.')">.</button>
-        <button class="eq" onclick="calc()">=</button>
-        <button class="op" onclick="press('+')">+</button>
-
-        <button class="clear" style="grid-column: span 2;" onclick="clearAll()">C</button>
-        <button class="clear" onclick="back()">⌫</button>
-        <button class="op" onclick="press('(')">(</button>
-        <button class="op" onclick="press(')')">)</button>
+      <button class="key" onclick="press('0')">0</button>
+      <button class="key" onclick="press('.')">.</button>
+      <button class="key eq" onclick="calc()">=</button>
+      <button class="key op" onclick="press('+')">+</button>
+      <button class="key" onclick="applyFunc('abs')">abs</button>
 
     </div>
+  </div>
+
+  <div class="history" id="historyPanel">
+    <div class="hist-head">
+      <div style="font-weight:700">History</div>
+      <div class="muted" id="histCount">0</div>
+    </div>
+    <div class="hist-list" id="histList"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn" onclick="clearHistory()">Clear History</button>
+      <button class="btn" onclick="exportHistory()">Export</button>
+    </div>
+  </div>
 </div>
 
 <script>
-    const d = document.getElementById('display');
+/* -----------------------------
+   State + Utilities
+   ----------------------------- */
+const d = document.getElementById('display');
+let history = JSON.parse(localStorage.getItem('calc_history_v2') || '[]');
+let lastAns = history.length ? history[0].result : '';
+renderHistory();
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+function playClick(){
+  try{
+    ensureAudio();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.value = 720;
+    g.gain.value = 0.03;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    setTimeout(()=>{ o.stop(); }, 70);
+  }catch(e){}
+}
+function vibrateShort(){ if(navigator.vibrate) navigator.vibrate(20); }
 
-    function press(v){
-        if(v === 'π') v = Math.PI;
-        if(v === 'e') v = Math.E;
-        d.value += v;
+/* -----------------------------
+   Input helpers
+   ----------------------------- */
+function press(v){
+  playClick(); vibrateShort();
+  if(v === 'π') v = String(Math.PI);
+  if(v === 'e') v = String(Math.E);
+  if(d.value === '0' || d.value === '') d.value = '';
+  d.value += v;
+  animateDisplay();
+}
+function applyFunc(name){
+  playClick(); vibrateShort();
+  const map = {
+    sin: 'Math.sin(',
+    cos: 'Math.cos(',
+    tan: 'Math.tan(',
+    sqrt: 'Math.sqrt(',
+    ln: 'ln(',
+    pow: '**',
+    exp: 'Math.exp(',
+    abs: 'Math.abs('
+  };
+  if(name === 'pow'){
+    // user-friendly: put operator for power
+    d.value += '^';
+  } else if(map[name]){
+    d.value += map[name];
+    if(map[name].endsWith('(')) d.value += '';
+  }
+  animateDisplay();
+}
+function clearAll(){ playClick(); vibrateShort(); d.value = ''; animateDisplay(); }
+function back(){ playClick(); vibrateShort(); d.value = d.value.slice(0,-1); animateDisplay(); }
+function percent(){ playClick(); vibrateShort(); // convert current number to percentage
+  try{
+    if(d.value === '') return;
+    let v = evalSafe(replaceFriendly(d.value));
+    d.value = String(v / 100);
+    animateDisplay();
+  }catch(e){ d.value = 'Error'; }
+}
+
+/* -----------------------------
+   Advanced: factorial
+   ----------------------------- */
+function factorial(){
+  playClick(); vibrateShort();
+  try{
+    let v = d.value.trim();
+    if(v === '') return;
+    let n = evalSafe(replaceFriendly(v));
+    if(!Number.isFinite(n) || n < 0 || n !== Math.floor(n)) { d.value = 'Error'; return; }
+    d.value = String(fact(n));
+    animateDisplay();
+  }catch(e){ d.value = 'Error'; }
+}
+function fact(n){ if(n<=1) return 1; let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
+
+/* -----------------------------
+   Display animation
+   ----------------------------- */
+function animateDisplay(){
+  d.classList.remove('display-anim');
+  void d.offsetWidth;
+  d.classList.add('display-anim');
+}
+
+/* -----------------------------
+   Parsing & safe evaluation
+   - supports: ^ => **, ln() => Math.log(), log() => Math.log10()
+   - supports factorial via x!
+   - supports usage of "ans" (last answer)
+   ----------------------------- */
+function replaceFriendly(expr){
+  // replace unicode ÷ × minus etc
+  expr = expr.replace(/÷/g,'/').replace(/×/g,'*').replace(/−/g,'-');
+  // replace ^ with **
+  expr = expr.replace(/\^/g,'**');
+  // ln() => Math.log()
+  expr = expr.replace(/ln\(/g,'Math.log(');
+  // log(...) treat as log10
+  expr = expr.replace(/log\(/g,'Math.log10(');
+  // allow ans keyword
+  expr = expr.replace(/\bans\b/ig, '(' + (lastAns !== undefined ? lastAns : '0') + ')');
+  return expr;
+}
+
+function evalSafe(expr){
+  expr = replaceFriendly(expr);
+  // whitelist characters and Math, numbers, operators
+  if(!/^[0-9+\-*/().,\s*MathlogeAnspiexPIE^%!*]+$/.test(expr)){
+    // liberal check — allow letters used in Math.* 
+    // but to be safe, still attempt evaluation in restricted function
+  }
+  // prevent accidental prototypes
+  if(expr.includes('__proto__')||expr.includes('constructor')||expr.includes('prototype')) throw 'Unsafe';
+  // create a safe Function with Math in scope
+  return Function('"use strict"; const Math=window.Math; return ('+expr+')')();
+}
+
+/* -----------------------------
+   Calculation
+   ----------------------------- */
+function calc(){
+  playClick(); vibrateShort();
+  let raw = d.value.trim();
+  if(raw === '') return;
+  // handle trailing factorial notation like 5!
+  try{
+    let expr = raw;
+    // handle x! patterns e.g., 5!
+    if(/\d+!/.test(expr)){
+      expr = expr.replace(/(\d+)!/g, (m, g1) => {
+        let n = parseInt(g1,10);
+        return String(fact(n));
+      });
     }
-
-    function sci(type){
-        d.value = `Math.${type}(` + d.value + ')';
+    let value = evalSafe(replaceFriendly(expr));
+    if(typeof value === 'number' && !Number.isFinite(value)) throw 'Err';
+    // format small floating rounding issues
+    if(typeof value === 'number'){
+      value = +parseFloat(value.toPrecision(12));
     }
+    // push to history
+    addHistory(raw, String(value));
+    lastAns = String(value);
+    d.value = String(value);
+    animateDisplay();
+  }catch(e){
+    d.value = 'Error';
+  }
+}
 
-    function clearAll(){ d.value = '' }
-    function back(){ d.value = d.value.slice(0,-1) }
+/* -----------------------------
+   History
+   ----------------------------- */
+function addHistory(expr, result){
+  const item = {expr, result, t: new Date().toISOString()};
+  history.unshift(item);
+  if(history.length>200) history.pop();
+  localStorage.setItem('calc_history_v2', JSON.stringify(history));
+  renderHistory();
+}
+function renderHistory(){
+  const el = document.getElementById('histList');
+  el.innerHTML = '';
+  history.forEach((h, i) => {
+    const node = document.createElement('div');
+    node.className = 'hist-item';
+    node.innerHTML = `<div style="font-weight:700">${h.result}</div><small>${h.expr} · ${new Date(h.t).toLocaleString()}</small>`;
+    node.onclick = () => { d.value = h.result; animateDisplay(); };
+    el.appendChild(node);
+  });
+  document.getElementById('histCount').innerText = history.length;
+}
 
-    function calc(){
-        let exp = d.value.replace(/\^/g, "**");
+/* -----------------------------
+   Export / Clear history
+   ----------------------------- */
+function clearHistory(){ history = []; localStorage.removeItem('calc_history_v2'); renderHistory(); }
+function exportHistory(){
+  const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(history, null, 2));
+  const a = document.createElement('a');
+  a.href = data; a.download = 'calc-history.json'; a.click();
+}
 
-        try{
-            d.value = Function('return ' + exp)();
-        }catch{
-            d.value = "Error";
-        }
-    }
+/* -----------------------------
+   Extras: keyboard support
+   ----------------------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') { calc(); e.preventDefault(); }
+  if(e.key === 'Backspace'){ back(); e.preventDefault(); }
+  if(/[0-9.+\-*/^()]/.test(e.key)){ press(e.key); e.preventDefault(); }
+});
 
-    function toggleMode(){
-        document.body.classList.toggle("dark");
-    }
+/* -----------------------------
+   Mode toggle (light/dark)
+   ----------------------------- */
+let isLight = false;
+function toggleMode(){
+  playClick(); vibrateShort();
+  isLight = !isLight;
+  if(isLight){
+    document.body.style.background = 'linear-gradient(180deg,#f1f6fb,#eaf2ff)';
+    document.body.style.color = '#0b1430';
+    document.querySelectorAll('.calc')[0].style.background = 'linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85))';
+    // tweak text colors for light
+    document.querySelectorAll('.muted').forEach(n=> n.style.color = '#556');
+  } else {
+    document.body.style.background = 'linear-gradient(180deg,#071018,#08121a)';
+    document.body.style.color = '#e6eef8';
+    document.querySelectorAll('.calc')[0].style.background = 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))';
+    document.querySelectorAll('.muted').forEach(n=> n.style.color = 'rgba(255,255,255,0.55)');
+  }
+}
+
+/* -----------------------------
+   Init
+   ----------------------------- */
+(function init(){
+  // preload small sound context by user gesture - create on first click
+  document.getElementById('keys').addEventListener('click', ()=> ensureAudio(), {once:true});
+  renderHistory();
+})();
 </script>
 
 </body>
