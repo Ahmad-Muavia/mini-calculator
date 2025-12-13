@@ -1,7 +1,8 @@
 # 🔥 Neon Glass Scientific Calculator
 
 A **modern, neon-glass styled scientific calculator** built with **pure HTML, CSS, and JavaScript**. This project focuses on **clean UI**, **advanced scientific functions**, and **smooth user experience** without using any external libraries or frameworks.
-`LIVE DEMO`: 
+
+`LIVE DEMO`:  https://ahmad-muavia.github.io/mini-calculator/
 
 ---
 
