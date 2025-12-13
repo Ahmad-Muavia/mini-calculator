@@ -259,18 +259,21 @@ function animateDisplay(){
    - supports usage of "ans" (last answer)
    ----------------------------- */
 function replaceFriendly(expr){
-  // replace unicode ÷ × minus etc
   expr = expr.replace(/÷/g,'/').replace(/×/g,'*').replace(/−/g,'-');
-  // replace ^ with **
   expr = expr.replace(/\^/g,'**');
-  // ln() => Math.log()
+
+  // DEGREE MODE trig
+  expr = expr.replace(/sin\(/g,'Math.sin((Math.PI/180)*');
+  expr = expr.replace(/cos\(/g,'Math.cos((Math.PI/180)*');
+  expr = expr.replace(/tan\(/g,'Math.tan((Math.PI/180)*');
+
   expr = expr.replace(/ln\(/g,'Math.log(');
-  // log(...) treat as log10
   expr = expr.replace(/log\(/g,'Math.log10(');
-  // allow ans keyword
+
   expr = expr.replace(/\bans\b/ig, '(' + (lastAns !== undefined ? lastAns : '0') + ')');
   return expr;
 }
+
 
 function evalSafe(expr){
   expr = replaceFriendly(expr);
