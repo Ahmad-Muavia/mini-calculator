@@ -1,176 +1,80 @@
-# 🔥 Neon Glass Scientific Calculator
+# Scientific Calculator
 
-A **modern, neon-glass styled scientific calculator** built with **pure HTML, CSS, and JavaScript**. This project focuses on **clean UI**, **advanced scientific functions**, and **smooth user experience** without using any external libraries or frameworks.
-
-`LIVE DEMO`:   https://ahmad-muavia.github.io/mini-calculator/
-
----
-
-## 📌 Project Overview
-
-The **Neon Glass Scientific Calculator** is a fully functional web-based calculator designed to replicate and enhance real-world scientific calculators. It combines **glassmorphism UI**, **neon highlights**, and **responsive layout** with powerful mathematical features.
-
-This project is ideal for:
-
-* Learning JavaScript math handling
-* Practicing UI/UX design
-* GitHub portfolio projects
-* Web-based utility tools
+A lightweight, responsive **scientific calculator** built with **HTML, CSS, and JavaScript**.  
+Supports both **mouse clicks** and **keyboard input**, making calculations fast and easy.
 
 ---
 
-## 🎨 User Interface & Design
+## Features
 
-### ✨ Glassmorphism + Neon UI
-
-* Semi-transparent glass panels
-* Neon glow shadows for buttons
-* Smooth hover & click animations
-* Minimal yet premium visual style
-
-### 🌗 Dark Mode Support
-
-* One-click dark/light toggle
-* Smooth background transitions
-* Optimized color contrast for readability
-
-### 📱 Fully Responsive Layout
-
-* Works on desktop, tablet, and mobile
-* Auto-adjusting grid layout
-* Touch-friendly buttons
+- Basic arithmetic: `+`, `-`, `*`, `/`  
+- Decimal point (`.`) support  
+- Clear (`C`) button to reset input  
+- Keyboard support:
+  - `0–9` → numbers  
+  - `+ - * /` → arithmetic operators  
+  - `.` → decimal point  
+  - `Enter` → calculate (`=`)  
+  - `Backspace` → delete last character  
+  - `Escape` → clear input  
+- Mouse click support for all buttons  
+- Modern, minimal UI with gradients and rounded buttons  
+- Fully responsive for desktop and mobile screens  
 
 ---
 
-## 🧮 Calculator Features
+## Demo
 
-### 🔢 Basic Arithmetic Operations
-
-* Addition (+)
-* Subtraction (−)
-* Multiplication (×)
-* Division (÷)
-* Percentage (%)
-
-### 📐 Scientific Functions
-
-* **Trigonometric Functions**
-
-  * sin(x)
-  * cos(x)
-  * tan(x)
-* **Root & Power Functions**
-
-  * Square Root (√x)
-  * Power (xʸ)
-* **Logarithmic Functions**
-
-  * Natural Log (ln)
-* **Exponential Functions**
-
-  * exp(x)
-* **Absolute Value**
-
-  * abs(x)
-* **Factorial**
-
-  * x!
-
-> ⚠️ Trigonometric calculations use JavaScript Math functions (radian-based).
+You can open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari) to use the calculator.
 
 ---
 
-## 🧠 Smart Input Handling
+## Usage
 
-* Automatic handling of constants:
-
-  * π (Pi)
-  * e (Euler’s number)
-* Smart expression parsing
-* Error handling for invalid expressions
-* Prevents app crashes on bad input
-
----
-
-## ⌨️ Keyboard & Interaction
-
-* Button-based input system
-* Smooth animations on every key press
-* Visual feedback for user actions
+1. **Mouse Input**: Click buttons to enter numbers or operators.  
+2. **Keyboard Input**:
+   - Press `0–9` for numbers  
+   - Press `+ - * /` for operators  
+   - Press `.` for decimal point  
+   - Press `Enter` to calculate  
+   - Press `Backspace` to delete last character  
+   - Press `Escape` to clear input  
 
 ---
 
-## 📜 History Panel
+## Example
 
-### 🕘 Calculation History
-
-* Displays previous calculations
-* Click any history item to reuse result
-* Keeps UI clean and readable
-
-### 🧹 History Controls
-
-* Clear history button
-* Export placeholder for future enhancement
+| Input           | Output |
+|-----------------|--------|
+| `7 + 3` + Enter | `10`   |
+| `5 * 6` + =     | `30`   |
+| `9 / 0` + =     | `Error`|
 
 ---
 
-## 🛠️ Technical Stack
+## Customization
 
-| Technology | Usage                              |
-| ---------- | ---------------------------------- |
-| HTML5      | Structure & layout                 |
-| CSS3       | Styling, animations, glassmorphism |
-| JavaScript | Calculator logic & interactions    |
-
-> 🚫 No external libraries used
+- **Styling**: Edit the `<style>` section in `index.html` to change colors, button shapes, or layout.  
+- **Operators**: Extend the `calculate()` function to add more functions (e.g., `%`, `sqrt()`).  
+- **Responsiveness**: Adjust CSS grid layout for different screen sizes.
 
 ---
 
-## 📂 Project Structure
+## Contributing
 
-```
-📦 calculator-project
- ┣ 📄 index.html
- ┣ 📄 README.md
-```
+Contributions are welcome! You can help by:
 
----
-
-## 🚀 How to Use
-
-1. Clone or download the repository
-2. Open `index.html` in any modern browser
-3. Start calculating instantly
+- Adding scientific functions like `sin`, `cos`, `tan`, `log`  
+- Implementing memory keys (`M+`, `MR`, `MC`)  
+- Adding history tracking  
+- Packaging as a **PWA** or **desktop app**
 
 ---
 
-## 🔮 Future Enhancements
+## License
 
-* DEG / RAD toggle for trigonometry
-* Sound & vibration feedback
-* Advanced memory functions (M+, M-, MR)
-* Export calculation history
-* Improved security (safe evaluation)
+This project is licensed under the **MIT License** – free to use, modify, and distribute.
 
----
 
-## 👨‍💻 Developer Notes
+## File Structure
 
-This project is written in **clean, readable JavaScript** with a strong focus on:
-
-* UI polish
-* Performance
-* Beginner-friendly logic
-
-Perfect for showcasing frontend skills on GitHub.
-
----
-
-## ⭐ License
-
-Free to use, modify, and distribute for learning and personal projects.
-
----
-
-🔥 *If you like this project, don’t forget to star the repository!*
