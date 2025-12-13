@@ -154,12 +154,15 @@
     </div>
   </div>
 </div>
+
 <script>
+/* -----------------------------
+   State + Utilities
+   ----------------------------- */
 const d = document.getElementById('display');
 let history = JSON.parse(localStorage.getItem('calc_history_v2') || '[]');
 let lastAns = history.length ? history[0].result : '';
-
-/* ------------------ sound + vibration ------------------ */
+renderHistory();
 let audioCtx = null;
 function ensureAudio(){
   if(!audioCtx){
@@ -171,141 +174,222 @@ function playClick(){
     ensureAudio();
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
-    o.frequency.value = 700;
+    o.type = 'sine';
+    o.frequency.value = 720;
     g.gain.value = 0.03;
     o.connect(g); g.connect(audioCtx.destination);
     o.start();
-    setTimeout(()=>o.stop(),70);
+    setTimeout(()=>{ o.stop(); }, 70);
   }catch(e){}
 }
 function vibrateShort(){ if(navigator.vibrate) navigator.vibrate(20); }
 
-/* ------------------ input ------------------ */
+/* -----------------------------
+   Input helpers
+   ----------------------------- */
 function press(v){
   playClick(); vibrateShort();
-  if(v === 'π') v = Math.PI;
-  if(v === 'e') v = Math.E;
-  if(d.value === '0') d.value = '';
+  if(v === 'π') v = String(Math.PI);
+  if(v === 'e') v = String(Math.E);
+  if(d.value === '0' || d.value === '') d.value = '';
   d.value += v;
   animateDisplay();
 }
-
-function clearAll(){
-  playClick(); vibrateShort();
-  d.value = '';
-  animateDisplay();
-}
-
-function back(){
-  playClick(); vibrateShort();
-  d.value = d.value.slice(0,-1);
-  animateDisplay();
-}
-
-/* ------------------ scientific ------------------ */
 function applyFunc(name){
   playClick(); vibrateShort();
   const map = {
-    sin: 'sin(',
-    cos: 'cos(',
-    tan: 'tan(',
+    sin: 'Math.sin(',
+    cos: 'Math.cos(',
+    tan: 'Math.tan(',
     sqrt: 'Math.sqrt(',
-    ln: 'Math.log(',
+    ln: 'ln(',
+    pow: '**',
     exp: 'Math.exp(',
     abs: 'Math.abs('
   };
-
   if(name === 'pow'){
+    // user-friendly: put operator for power
     d.value += '^';
   } else if(map[name]){
     d.value += map[name];
+    if(map[name].endsWith('(')) d.value += '';
   }
   animateDisplay();
 }
-
-function percent(){
-  playClick(); vibrateShort();
+function clearAll(){ playClick(); vibrateShort(); d.value = ''; animateDisplay(); }
+function back(){ playClick(); vibrateShort(); d.value = d.value.slice(0,-1); animateDisplay(); }
+function percent(){ playClick(); vibrateShort(); // convert current number to percentage
   try{
-    let v = evalSafe(d.value);
+    if(d.value === '') return;
+    let v = evalSafe(replaceFriendly(d.value));
     d.value = String(v / 100);
     animateDisplay();
-  }catch(e){
-    d.value = 'Error';
-  }
+  }catch(e){ d.value = 'Error'; }
 }
 
-/* ------------------ factorial ------------------ */
+/* -----------------------------
+   Advanced: factorial
+   ----------------------------- */
 function factorial(){
   playClick(); vibrateShort();
   try{
-    let n = evalSafe(d.value);
-    if(n < 0 || n % 1 !== 0) throw 0;
-    let r = 1;
-    for(let i=2;i<=n;i++) r*=i;
-    d.value = r;
+    let v = d.value.trim();
+    if(v === '') return;
+    let n = evalSafe(replaceFriendly(v));
+    if(!Number.isFinite(n) || n < 0 || n !== Math.floor(n)) { d.value = 'Error'; return; }
+    d.value = String(fact(n));
     animateDisplay();
-  }catch(e){
-    d.value = 'Error';
-  }
+  }catch(e){ d.value = 'Error'; }
 }
+function fact(n){ if(n<=1) return 1; let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
 
-/* ------------------ animation ------------------ */
+/* -----------------------------
+   Display animation
+   ----------------------------- */
 function animateDisplay(){
   d.classList.remove('display-anim');
   void d.offsetWidth;
   d.classList.add('display-anim');
 }
 
-/* ------------------ safe eval ------------------ */
+/* -----------------------------
+   Parsing & safe evaluation
+   - supports: ^ => **, ln() => Math.log(), log() => Math.log10()
+   - supports factorial via x!
+   - supports usage of "ans" (last answer)
+   ----------------------------- */
 function replaceFriendly(expr){
-  return expr
-    .replace(/\^/g,'**')
-    .replace(/sin\(/g,'Math.sin(')
-    .replace(/cos\(/g,'Math.cos(')
-    .replace(/tan\(/g,'Math.tan('));
+  // replace unicode ÷ × minus etc
+  expr = expr.replace(/÷/g,'/').replace(/×/g,'*').replace(/−/g,'-');
+  // replace ^ with **
+  expr = expr.replace(/\^/g,'**');
+  // ln() => Math.log()
+  expr = expr.replace(/ln\(/g,'Math.log(');
+  // log(...) treat as log10
+  expr = expr.replace(/log\(/g,'Math.log10(');
+  // allow ans keyword
+  expr = expr.replace(/\bans\b/ig, '(' + (lastAns !== undefined ? lastAns : '0') + ')');
+  return expr;
 }
 
 function evalSafe(expr){
   expr = replaceFriendly(expr);
-  return Function('"use strict"; return ('+expr+')')();
+  // whitelist characters and Math, numbers, operators
+  if(!/^[0-9+\-*/().,\s*MathlogeAnspiexPIE^%!*]+$/.test(expr)){
+    // liberal check — allow letters used in Math.* 
+    // but to be safe, still attempt evaluation in restricted function
+  }
+  // prevent accidental prototypes
+  if(expr.includes('__proto__')||expr.includes('constructor')||expr.includes('prototype')) throw 'Unsafe';
+  // create a safe Function with Math in scope
+  return Function('"use strict"; const Math=window.Math; return ('+expr+')')();
 }
 
-/* ------------------ calculate ------------------ */
+/* -----------------------------
+   Calculation
+   ----------------------------- */
 function calc(){
   playClick(); vibrateShort();
+  let raw = d.value.trim();
+  if(raw === '') return;
+  // handle trailing factorial notation like 5!
   try{
-    let result = evalSafe(d.value);
-    d.value = Number(result.toPrecision(12));
-    lastAns = d.value;
+    let expr = raw;
+    // handle x! patterns e.g., 5!
+    if(/\d+!/.test(expr)){
+      expr = expr.replace(/(\d+)!/g, (m, g1) => {
+        let n = parseInt(g1,10);
+        return String(fact(n));
+      });
+    }
+    let value = evalSafe(replaceFriendly(expr));
+    if(typeof value === 'number' && !Number.isFinite(value)) throw 'Err';
+    // format small floating rounding issues
+    if(typeof value === 'number'){
+      value = +parseFloat(value.toPrecision(12));
+    }
+    // push to history
+    addHistory(raw, String(value));
+    lastAns = String(value);
+    d.value = String(value);
     animateDisplay();
   }catch(e){
     d.value = 'Error';
   }
 }
 
-/* ------------------ history ------------------ */
+/* -----------------------------
+   History
+   ----------------------------- */
+function addHistory(expr, result){
+  const item = {expr, result, t: new Date().toISOString()};
+  history.unshift(item);
+  if(history.length>200) history.pop();
+  localStorage.setItem('calc_history_v2', JSON.stringify(history));
+  renderHistory();
+}
 function renderHistory(){
   const el = document.getElementById('histList');
   el.innerHTML = '';
-  history.forEach(h=>{
-    const div = document.createElement('div');
-    div.className = 'hist-item';
-    div.innerHTML = `<b>${h.result}</b><small>${h.expr}</small>`;
-    div.onclick = ()=> d.value = h.result;
-    el.appendChild(div);
+  history.forEach((h, i) => {
+    const node = document.createElement('div');
+    node.className = 'hist-item';
+    node.innerHTML = `<div style="font-weight:700">${h.result}</div><small>${h.expr} · ${new Date(h.t).toLocaleString()}</small>`;
+    node.onclick = () => { d.value = h.result; animateDisplay(); };
+    el.appendChild(node);
   });
   document.getElementById('histCount').innerText = history.length;
 }
-renderHistory();
 
-/* ------------------ keyboard ------------------ */
-window.addEventListener('keydown',e=>{
-  if(e.key==='Enter') calc();
-  else if(e.key==='Backspace') back();
-  else if(/[0-9.+\-*/^()]/.test(e.key)) press(e.key);
+/* -----------------------------
+   Export / Clear history
+   ----------------------------- */
+function clearHistory(){ history = []; localStorage.removeItem('calc_history_v2'); renderHistory(); }
+function exportHistory(){
+  const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(history, null, 2));
+  const a = document.createElement('a');
+  a.href = data; a.download = 'calc-history.json'; a.click();
+}
+
+/* -----------------------------
+   Extras: keyboard support
+   ----------------------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') { calc(); e.preventDefault(); }
+  if(e.key === 'Backspace'){ back(); e.preventDefault(); }
+  if(/[0-9.+\-*/^()]/.test(e.key)){ press(e.key); e.preventDefault(); }
 });
-</script>
 
+/* -----------------------------
+   Mode toggle (light/dark)
+   ----------------------------- */
+let isLight = false;
+function toggleMode(){
+  playClick(); vibrateShort();
+  isLight = !isLight;
+  if(isLight){
+    document.body.style.background = 'linear-gradient(180deg,#f1f6fb,#eaf2ff)';
+    document.body.style.color = '#0b1430';
+    document.querySelectorAll('.calc')[0].style.background = 'linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85))';
+    // tweak text colors for light
+    document.querySelectorAll('.muted').forEach(n=> n.style.color = '#556');
+  } else {
+    document.body.style.background = 'linear-gradient(180deg,#071018,#08121a)';
+    document.body.style.color = '#e6eef8';
+    document.querySelectorAll('.calc')[0].style.background = 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))';
+    document.querySelectorAll('.muted').forEach(n=> n.style.color = 'rgba(255,255,255,0.55)');
+  }
+}
+
+/* -----------------------------
+   Init
+   ----------------------------- */
+(function init(){
+  // preload small sound context by user gesture - create on first click
+  document.getElementById('keys').addEventListener('click', ()=> ensureAudio(), {once:true});
+  renderHistory();
+})();
+</script>
 
 </body>
 </html>
