@@ -198,15 +198,21 @@ function press(v){
 function applyFunc(name){
   playClick(); vibrateShort();
   const map = {
-    sin: 'Math.sin(',
-    cos: 'Math.cos(',
-    tan: 'Math.tan(',
+    sin: 'sin(',
+    cos: 'cos(',
+    tan: 'tan(',
     sqrt: 'Math.sqrt(',
     ln: 'ln(',
-    pow: '**',
+    pow: '^',
     exp: 'Math.exp(',
     abs: 'Math.abs('
   };
+  if(map[name]){
+    d.value += map[name];
+  }
+  animateDisplay();
+}
+
   if(name === 'pow'){
     // user-friendly: put operator for power
     d.value += '^';
