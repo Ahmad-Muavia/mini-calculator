@@ -227,7 +227,7 @@ function back(){ playClick(); vibrateShort(); d.value = d.value.slice(0,-1); ani
 function percent(){ playClick(); vibrateShort(); // convert current number to percentage
   try{
     if(d.value === '') return;
-    let v = evalSafe(replaceFriendly(d.value));
+    let value = evalSafe(expr);
     d.value = String(v / 100);
     animateDisplay();
   }catch(e){ d.value = 'Error'; }
