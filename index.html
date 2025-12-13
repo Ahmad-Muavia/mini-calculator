@@ -269,9 +269,9 @@ function replaceFriendly(expr){
   expr = expr.replace(/\^/g,'**');
 
   // DEGREE MODE trig
-  expr = expr.replace(/sin\(/g,'Math.sin((Math.PI/180)*');
-  expr = expr.replace(/cos\(/g,'Math.cos((Math.PI/180)*');
-  expr = expr.replace(/tan\(/g,'Math.tan((Math.PI/180)*');
+  expr = expr.replace(/sin\(/g,'sin((Math.PI/180)*');
+  expr = expr.replace(/cos\(/g,'cos((Math.PI/180)*');
+  expr = expr.replace(/tan\(/g,'tan((Math.PI/180)*');
 
   expr = expr.replace(/ln\(/g,'Math.log(');
   expr = expr.replace(/log\(/g,'Math.log10(');
