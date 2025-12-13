@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Neon Glass Scientific Calculator</title>
+<title>Scientific Calculator</title>
 <style>
   :root{
     --bg: #0b0f14;
@@ -18,7 +18,7 @@
   html,body{height:100%;margin:0;background:linear-gradient(180deg,#071018 0%, #08121a 100%); color:#e6eef8}
   .wrap{display:flex;gap:22px;align-items:flex-start;justify-content:center;padding:28px;}
   .calc{
-    width:360px;
+    width:400px;
     border-radius:16px;
     padding:18px;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
@@ -89,12 +89,11 @@
   <div class="calc" id="calculator">
     <div class="topbar">
       <div>
-        <div class="title">Neon Scientific Calculator</div>
+        <div class="title">Scientific Calculator</div>
         <div class="muted" style="font-size:12px">Glass • Neon • Sound • Vibration • History</div>
       </div>
       <div class="controls">
-        <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">C</button>
-        <button class="btn" id="modeToggle" onclick="toggleMode()">🌙 Dark / ☀️ Light</button>
+        <button class="btn" id="modeToggle" onclick="toggleMode()">🌙D/☀️L</button>
       </div>
     </div>
 
@@ -138,6 +137,7 @@
       <button class="key eq" onclick="calc()">=</button>
       <button class="key op" onclick="press('+')">+</button>
       <button class="key" onclick="applyFunc('abs')">abs</button>
+      <button class="btn" id="clearAllTop" title="Clear" onclick="clearAll()">C</button>
 
     </div>
   </div>
