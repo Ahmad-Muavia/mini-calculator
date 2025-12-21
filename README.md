@@ -28,7 +28,7 @@ Fully responsive for mobile and desktop.
 
 Clone the repo:
 
-git clone https://github.com/yourusername/mini-calculator.git
+git clone https://github.com/Ahmad-Muavia/mini-calculator.git
 
 
 Open in browser:
