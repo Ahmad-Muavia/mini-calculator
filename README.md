@@ -1,80 +1,77 @@
-# Scientific Calculator
+Mini Calculator (Glass Neon UI)
 
-A lightweight, responsive **scientific calculator** built with **HTML, CSS, and JavaScript**.  
-Supports both **mouse clicks** and **keyboard input**, making calculations fast and easy.
+A modern, browser-based mini calculator with a sleek glass/neon design, sound, vibration feedback, and calculation history. Built with HTML, CSS, and JavaScript, this calculator supports both standard and advanced mathematical operations.
 
----
+Features
 
-## Features
+Basic Operations: Addition, subtraction, multiplication, division.
 
-- Basic arithmetic: `+`, `-`, `*`, `/`  
-- Decimal point (`.`) support  
-- Clear (`C`) button to reset input  
-- Keyboard support:
-  - `0–9` → numbers  
-  - `+ - * /` → arithmetic operators  
-  - `.` → decimal point  
-  - `Enter` → calculate (`=`)  
-  - `Backspace` → delete last character  
-  - `Escape` → clear input  
-- Mouse click support for all buttons  
-- Modern, minimal UI with gradients and rounded buttons  
-- Fully responsive for desktop and mobile screens  
+Scientific Functions: sin, cos, tan, sqrt, ln, exp, pow, abs.
 
----
+Factorial Support: Calculate n! directly.
 
-## Demo
+Percentage Calculation.
 
-You can open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari) to use the calculator.
+History Panel: View, reuse, export, and clear previous calculations.
 
----
+Sound & Vibration: Feedback for button presses (optional, supported on mobile).
 
-## Usage
+Keyboard Support: Works with numbers, operators, Enter, Backspace, and Escape keys.
 
-1. **Mouse Input**: Click buttons to enter numbers or operators.  
-2. **Keyboard Input**:
-   - Press `0–9` for numbers  
-   - Press `+ - * /` for operators  
-   - Press `.` for decimal point  
-   - Press `Enter` to calculate  
-   - Press `Backspace` to delete last character  
-   - Press `Escape` to clear input  
+Dark/Light Mode Toggle: Switch between visually distinct themes.
 
----
+Safe Evaluation: Uses a secure evaluation function to prevent unsafe code execution.
 
-## Example
-
-| Input           | Output |
-|-----------------|--------|
-| `7 + 3` + Enter | `10`   |
-| `5 * 6` + =     | `30`   |
-| `9 / 0` + =     | `Error`|
-
----
-
-## Customization
-
-- **Styling**: Edit the `<style>` section in `index.html` to change colors, button shapes, or layout.  
-- **Operators**: Extend the `calculate()` function to add more functions (e.g., `%`, `sqrt()`).  
-- **Responsiveness**: Adjust CSS grid layout for different screen sizes.
-
----
-
-## Contributing
-
-Contributions are welcome! You can help by:
-
-- Adding scientific functions like `sin`, `cos`, `tan`, `log`  
-- Implementing memory keys (`M+`, `MR`, `MC`)  
-- Adding history tracking  
-- Packaging as a **PWA** or **desktop app**
-
----
-
-## License
-
-This project is licensed under the **MIT License** – free to use, modify, and distribute.
+Demo
 
 
-## File Structure
+Glass and neon design with responsive layout.
 
+Installation
+
+Clone or download the repository:
+
+git clone https://github.com/yourusername/mini-calculator.git
+
+
+Open index.html in any modern browser (Chrome, Firefox, Edge, Safari).
+
+No server required — fully client-side.
+
+Usage
+
+Click buttons or use keyboard keys to enter expressions.
+
+Advanced functions: click the corresponding scientific buttons (sin, cos, tan, etc.).
+
+Calculate factorials with the x! button.
+
+View history: click any history item to reuse its result.
+
+Export history: save past calculations in JSON format.
+
+Clear display/history: use C or Clear History buttons.
+
+File Structure
+/index.html        → Main HTML and JavaScript
+/style.css         → CSS styles (optional if externalized)
+
+Technologies
+
+HTML5
+
+CSS3 (Glassmorphism & neon effects)
+
+JavaScript (ES6+)
+
+LocalStorage for saving history
+
+Responsive Design
+
+Works on desktop and mobile.
+
+Adjusts key layout automatically for smaller screens.
+
+License
+
+MIT License © 2025
