@@ -1,77 +1,59 @@
-Mini Calculator (Glass Neon UI)
+<p align="center"> <img src="screenshot.png" alt="Mini Calculator" width="300"/> <h1 align="center">🌟 Mini Calculator</h1> <p align="center">Glass • Neon • Sound • Vibration • History</p> </p>
+<p align="center"> <a href="https://github.com/yourusername/mini-calculator/stargazers"><img src="https://img.shields.io/github/stars/yourusername/mini-calculator?style=social" alt="Stars"></a> <a href="https://github.com/yourusername/mini-calculator/issues"><img src="https://img.shields.io/github/issues/yourusername/mini-calculator" alt="Issues"></a> <a href="https://github.com/yourusername/mini-calculator/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yourusername/mini-calculator" alt="License"></a> </p>
+🎨 Features
 
-A modern, browser-based mini calculator with a sleek glass/neon design, sound, vibration feedback, and calculation history. Built with HTML, CSS, and JavaScript, this calculator supports both standard and advanced mathematical operations.
+💻 Basic Operations: +, -, ×, ÷
 
-Features
+🕹 History Panel: View, reuse, export, clear history
 
-Basic Operations: Addition, subtraction, multiplication, division.
+🎵 Sound & Vibration feedback (mobile-friendly)
 
-Scientific Functions: sin, cos, tan, sqrt, ln, exp, pow, abs.
+⌨️ Keyboard Support: Numbers, operators, Enter, Backspace, Escape
 
-Factorial Support: Calculate n! directly.
+🌙☀️ Dark / Light Mode Toggle
 
-Percentage Calculation.
+🔒 Safe Evaluation: Prevents unsafe code execution
 
-History Panel: View, reuse, export, and clear previous calculations.
+🚀 Demo
 
-Sound & Vibration: Feedback for button presses (optional, supported on mobile).
+Click any history item to reuse the result:
 
-Keyboard Support: Works with numbers, operators, Enter, Backspace, and Escape keys.
-
-Dark/Light Mode Toggle: Switch between visually distinct themes.
-
-Safe Evaluation: Uses a secure evaluation function to prevent unsafe code execution.
-
-Demo
+Example: 5 + 3 → 8
+Click "8" in history to reuse it
 
 
-Glass and neon design with responsive layout.
+Fully responsive for mobile and desktop.
 
-Installation
+⚡ Installation
 
-Clone or download the repository:
+Clone the repo:
 
 git clone https://github.com/yourusername/mini-calculator.git
 
 
-Open index.html in any modern browser (Chrome, Firefox, Edge, Safari).
+Open in browser:
+Double-click index.html or open in Chrome, Firefox, Edge, Safari.
 
-No server required — fully client-side.
+No server needed — fully client-side.
 
-Usage
+🛠 Usage
 
-Click buttons or use keyboard keys to enter expressions.
+🔹 Click buttons or use keyboard input
 
-Advanced functions: click the corresponding scientific buttons (sin, cos, tan, etc.).
+🔹 Export or clear history
 
-Calculate factorials with the x! button.
+🔹 Dark/Light mode toggle for style
 
-View history: click any history item to reuse its result.
+🗂 File Structure
+/index.html    → Main HTML + JS
+/style.css     → CSS (optional if externalized)
 
-Export history: save past calculations in JSON format.
+📱 Responsive Design
 
-Clear display/history: use C or Clear History buttons.
+Works on desktop & mobile
 
-File Structure
-/index.html        → Main HTML and JavaScript
-/style.css         → CSS styles (optional if externalized)
+Auto-adjusts layout for smaller screens
 
-Technologies
-
-HTML5
-
-CSS3 (Glassmorphism & neon effects)
-
-JavaScript (ES6+)
-
-LocalStorage for saving history
-
-Responsive Design
-
-Works on desktop and mobile.
-
-Adjusts key layout automatically for smaller screens.
-
-License
+📄 License
 
 MIT License © 2025
