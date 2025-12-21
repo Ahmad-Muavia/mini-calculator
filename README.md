@@ -1,5 +1,7 @@
 <p align="center"> <img src="screenshot.png" alt="Mini Calculator" width="300"/> <h1 align="center">🌟 Mini Calculator</h1> <p align="center">Glass • Neon • Sound • Vibration • History</p> </p>
 <p align="center"> <a href="https://github.com/yourusername/mini-calculator/stargazers"><img src="https://img.shields.io/github/stars/yourusername/mini-calculator?style=social" alt="Stars"></a> <a href="https://github.com/yourusername/mini-calculator/issues"><img src="https://img.shields.io/github/issues/yourusername/mini-calculator" alt="Issues"></a> <a href="https://github.com/yourusername/mini-calculator/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yourusername/mini-calculator" alt="License"></a> </p>
+Live Demo: https://ahmad-muavia.github.io/mini-calculator/
+
 🎨 Features
 
 💻 Basic Operations: +, -, ×, ÷
