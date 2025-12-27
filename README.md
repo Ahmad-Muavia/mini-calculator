@@ -1,8 +1,9 @@
 <p align="center"> <img src="screenshot.png" alt="Mini Calculator" width="300"/> <h1 align="center">🌟 Mini Calculator</h1> <p align="center">Glass • Neon • Sound • Vibration • History</p> </p>
 <p align="center"> <a href="https://github.com/Ahmad-Muavia/mini-calculator/stargazers"><img src="https://img.shields.io/github/stars/Ahmad-Muavia/mini-calculator?style=social" alt="Stars"></a> <a href="https://github.com/Ahmad-Muavia/mini-calculator/issues"><img src="https://img.shields.io/github/issues/Ahmad-Muavia/mini-calculator" alt="Issues"></a> <a href="https://github.com/Ahmad-Muavia/mini-calculator/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Ahmad-Muavia/mini-calculator" alt="License"></a> </p>
-Live Demo: https://ahmad-muavia.github.io/mini-calculator/
 
-🎨 Features
+🚀 Demo: https://ahmad-muavia.github.io/mini-calculator/
+
+# 🎨 Features
 
 💻 Basic Operations: +, -, ×, ÷
 
@@ -16,18 +17,10 @@ Live Demo: https://ahmad-muavia.github.io/mini-calculator/
 
 🔒 Safe Evaluation: Prevents unsafe code execution
 
-🚀 Demo
-
-Click any history item to reuse the result:
-
-Example: 5 + 3 → 8
-Click "8" in history to reuse it
 
 
-Fully responsive for mobile and desktop.
-
-⚡ Installation
-
+# ⚡ Installation
+```bash
 Clone the repo:
 
 git clone https://github.com/Ahmad-Muavia/mini-calculator.git
@@ -37,8 +30,8 @@ Open in browser:
 Double-click index.html or open in Chrome, Firefox, Edge, Safari.
 
 No server needed — fully client-side.
-
-🛠 Usage
+```
+# 🛠 Usage
 
 🔹 Click buttons or use keyboard input
 
@@ -46,16 +39,16 @@ No server needed — fully client-side.
 
 🔹 Dark/Light mode toggle for style
 
-🗂 File Structure
+# 🗂 File Structure
 /index.html    → Main HTML + JS
 /style.css     → CSS (optional if externalized)
 
-📱 Responsive Design
+# 📱 Responsive Design
 
 Works on desktop & mobile
 
 Auto-adjusts layout for smaller screens
 
-📄 License
+# 📄 License
 
-MIT License © 2025
+License © 2025
